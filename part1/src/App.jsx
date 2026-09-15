@@ -16,6 +16,10 @@ const App = () => {
         name: "State of a component",
         exercises: 14,
       },
+      {
+        name: "React",
+        exercises: 4,
+      },
     ],
   };
 
