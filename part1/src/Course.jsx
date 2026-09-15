@@ -12,33 +12,6 @@ const Part = (props) => {
   );
 };
 
-// const Content = (props) => {
-//   for (let i = 0; i <= props.parts.length; i++) {
-//     return (
-//       <Part
-//         part={props.parts[i].name}
-//         exercises={props.parts[i].exercises}
-//       ></Part>
-//     );
-//   }
-//     return (
-//       <div>
-//         <Part
-//           part={props.parts[0].name}
-//           exercises={props.parts[0].exercises}
-//         ></Part>
-//         <Part
-//           part={props.parts[1].name}
-//           exercises={props.parts[1].exercises}
-//         ></Part>
-//         <Part
-//           part={props.parts[2].name}
-//           exercises={props.parts[2].exercises}
-//         ></Part>
-//       </div>
-//     );
-// };
-
 const Content = (props) => {
   return (
     <Part
@@ -49,11 +22,9 @@ const Content = (props) => {
 };
 
 const Total = (props) => {
-  let summa = 0;
-
-  for (let i = 0; i < props.parts.length; i++) {
-    summa += props.parts[i].exercises;
-  }
+  const summa = props.parts.reduce((all, part) => {
+    return all + part.exercises;
+  }, 0);
 
   return <p>Number of exercises {summa}</p>;
 };
