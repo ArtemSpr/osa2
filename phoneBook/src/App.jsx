@@ -7,34 +7,49 @@ const App = () => {
   const [newName, setNewName] = useState("");
 
   const showPersons = () => {
-    return persons.map((human) => <span key={human.name}>{human.name}</span>);
+    return persons.map((human) => (
+      <span className="person-chip" key={human.name}>
+        {human.name}
+      </span>
+    ));
+  };
+
+  const nameChecker = () => {
+    if (persons.some((human) => human.name === newName)) {
+      return alert(`Name ${newName} is already added into phonebook`);
+    } else {
+      setPersons([...persons, { name: newName }]);
+      setNewName("");
+    }
   };
 
   return (
-    <div>
-      <h2>Phonebook</h2>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
+    <div className="page">
+      <div className="card">
+        <h2 className="title">Phonebook</h2>
+        <form
+          className="phone-form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            nameChecker();
+          }}
+        >
+          <div className="form-row">
+            <label>name:</label>
+            <input
+              value={newName}
+              onChange={(event) => setNewName(event.target.value)}
+            />
+          </div>
 
-          setPersons([...persons, { name: newName }]);
-          setNewName("");
-        }}
-      >
-        <div>
-          name:
-          <input
-            value={newName}
-            onChange={(event) => setNewName(event.target.value)}
-          />
-        </div>
+          <div>
+            <button type="submit">add</button>
+          </div>
+        </form>
 
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <div className="humanList">{showPersons()}</div>
+        <h2 className="title">Numbers</h2>
+        <div className="humanList">{showPersons()}</div>
+      </div>
     </div>
   );
 };

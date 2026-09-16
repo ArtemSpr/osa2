@@ -1,4 +1,114 @@
+:root {
+  --bg: #F4F6FA;
+  --card-bg: #FFFFFF;
+  --border: #DCE3EC;
+  --text-dark: #1F2937;
+  --text-muted: #6B7280;
+  --accent: #4F6EF7;
+  --accent-dark: #3A54C9;
+  --chip-bg: #EEF1FE;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(31, 41, 55, 0.06);
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0 0 16px;
+}
+
+.title:not(:first-child) {
+  margin-top: 28px;
+}
+
+.phone-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-row label {
+  font-size: 14px;
+  color: var(--text-muted);
+  min-width: 45px;
+}
+
+.form-row input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-row input:focus {
+  border-color: var(--accent);
+}
+
+button {
+  padding: 10px 22px;
+  background: var(--accent);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+button:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
 .humanList {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+}
+
+.person-chip {
+  padding: 10px 14px;
+  background: var(--chip-bg);
+  color: var(--text-dark);
+  border-radius: 10px;
+  font-size: 14px;
 }
