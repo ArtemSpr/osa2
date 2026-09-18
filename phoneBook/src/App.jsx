@@ -2,6 +2,78 @@ import "./App.css";
 
 import { useState } from "react";
 
+const PhoneContacts = (props) => {
+  return (
+    <>
+      <h2 className="title">Numbers</h2>
+      <div className="humanList">
+        {props.personsToShow.map((person) => (
+          <span className="person-chip" key={person.name}>
+            Name: {person.name} <br />
+            Number: {person.number || "Unknown"}
+          </span>
+        ))}
+      </div>
+    </>
+  );
+};
+
+const PhoneFilter = (props) => {
+  return (
+    <>
+      {" "}
+      <label htmlFor="filter" className="filter-label">
+        Add filter{" "}
+      </label>
+      <input
+        type="text"
+        className="filter-input"
+        name="filter"
+        value={props.newFilter}
+        onChange={(event) => props.setNewFilter(event.target.value)}
+      ></input>
+    </>
+  );
+};
+
+const PhoneForm = (props) => {
+  return (
+    <>
+      {" "}
+      <h2 className="title">Phonebook</h2>
+      <form
+        className="phone-form"
+        onSubmit={(event) => {
+          event.preventDefault();
+          props.checker();
+        }}
+      >
+        <div className="form-row">
+          <label>name:</label>
+
+          <input
+            value={props.newName}
+            onChange={(event) => props.setNewName(event.target.value)}
+          />
+        </div>
+
+        <div className="form-row">
+          <label>number:</label>
+
+          <input
+            value={props.newNumber}
+            onChange={(event) => props.setNewNumber(event.target.value)}
+          />
+        </div>
+
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+    </>
+  );
+};
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: "040-123456" },
@@ -56,58 +128,15 @@ const App = () => {
   return (
     <div className="page">
       <div className="card">
-        <h2 className="title">Phonebook</h2>
-        <form
-          className="phone-form"
-          onSubmit={(event) => {
-            event.preventDefault();
-            checker();
-          }}
-        >
-          <div className="form-row">
-            <label>name:</label>
-
-            <input
-              value={newName}
-              onChange={(event) => setNewName(event.target.value)}
-            />
-          </div>
-
-          <div className="form-row">
-            <label>number:</label>
-
-            <input
-              value={newNumber}
-              onChange={(event) => setNewNumber(event.target.value)}
-            />
-          </div>
-
-          <div>
-            <button type="submit">add</button>
-          </div>
-        </form>
-
-        <label htmlFor="filter" className="filter-label">
-          Add filter{" "}
-        </label>
-
-        <input
-          type="text"
-          className="filter-input"
-          name="filter"
-          value={newFilter}
-          onChange={(event) => setNewFilter(event.target.value)}
-        ></input>
-
-        <h2 className="title">Numbers</h2>
-        <div className="humanList">
-          {personsToShow.map((person) => (
-            <span className="person-chip" key={person.name}>
-              Name: {person.name} <br />
-              Number: {person.number || "Unknown"}
-            </span>
-          ))}
-        </div>
+        <PhoneForm
+          newName={newName}
+          setNewName={setNewName}
+          newNumber={newNumber}
+          setNewNumber={setNewNumber}
+          checker={checker}
+        />
+        <PhoneFilter newFilter={newFilter} setNewFilter={setNewFilter} />
+        <PhoneContacts personsToShow={personsToShow} />
       </div>
     </div>
   );
