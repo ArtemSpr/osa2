@@ -3,18 +3,19 @@ import "./App.css";
 import { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "040-123456" },
+    { name: "Ada Lovelace", number: "39-44-5323523" },
+    { name: "Dan Abramov", number: "12-43-234345" },
+    { name: "Mary Poppendieck", number: "39-23-6423122" },
+  ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState();
+  const [newFilter, setNewFilter] = useState("");
 
-  const showPersons = () => {
-    return persons.map((human) => (
-      <span className="person-chip" key={human.name}>
-        Name: {human.name} <br />
-        Number: {human.number || "Unknown"}
-      </span>
-    ));
-  };
+  const personsToShow = persons.filter((person) =>
+    person.name.toLowerCase().includes(newFilter.toLowerCase()),
+  );
 
   const nameChecker = () => {
     if (!Number.isNaN(Number(newName))) {
@@ -42,7 +43,6 @@ const App = () => {
 
   const checker = () => {
     setNewNumber(Number(newNumber));
-    // console.log("Trying make a number from name: " + Number(newName));
 
     if (nameChecker() === true && numberChecker() === true) {
       setPersons([...persons, { name: newName, number: newNumber }]);
@@ -87,8 +87,27 @@ const App = () => {
           </div>
         </form>
 
+        <label htmlFor="filter" className="filter-label">
+          Add filter{" "}
+        </label>
+
+        <input
+          type="text"
+          className="filter-input"
+          name="filter"
+          value={newFilter}
+          onChange={(event) => setNewFilter(event.target.value)}
+        ></input>
+
         <h2 className="title">Numbers</h2>
-        <div className="humanList">{showPersons()}</div>
+        <div className="humanList">
+          {personsToShow.map((person) => (
+            <span className="person-chip" key={person.name}>
+              Name: {person.name} <br />
+              Number: {person.number || "Unknown"}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
