@@ -94,7 +94,7 @@ const App = () => {
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [PhoneForm]);
 
   const nameChecker = () => {
     if (!Number.isNaN(Number(newName))) {
@@ -124,7 +124,20 @@ const App = () => {
     setNewNumber(Number(newNumber));
 
     if (nameChecker() === true && numberChecker() === true) {
-      setPersons([...persons, { name: newName, number: newNumber }]);
+      try {
+        axios
+          .post("http://localhost:3001/persons", {
+            name: newName,
+            number: newNumber,
+          })
+          .then((response) => {
+            setPersons(persons.concat(response.data));
+          });
+      } catch (error) {
+        console.error(error);
+      }
+
+      // setPersons([...persons, { name: newName, number: newNumber }]);
       setNewName("");
       setNewNumber("");
     } else {
