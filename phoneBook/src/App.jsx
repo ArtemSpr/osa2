@@ -2,6 +2,7 @@ import "./App.css";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { getAll, addNew, removeChip } from "./services/persons";
 
 const PhoneContacts = (props) => {
   return (
@@ -9,10 +10,29 @@ const PhoneContacts = (props) => {
       <h2 className="title">Numbers</h2>
       <div className="humanList">
         {props.personsToShow.map((person) => (
-          <span className="person-chip" key={person.name}>
-            Name: {person.name} <br />
-            Number: {person.number || "Unknown"}
-          </span>
+          <div className="personChip-block">
+            <span className="person-chip" key={person.name}>
+              Name: {person.name} <br />
+              Number: {person.number || "Unknown"}
+            </span>
+            <div
+              className="deleteChip"
+              onClick={() => {
+                try {
+                  removeChip(person.id).then(() => {
+                    props.setPersons((prevPersons) =>
+                      prevPersons.filter((p) => p.id !== person.id),
+                    );
+                  });
+                  console.log("User was sucssesfuly deleted");
+                } catch (error) {
+                  console.error(error);
+                }
+              }}
+            >
+              Delete
+            </div>
+          </div>
         ))}
       </div>
     </>
@@ -86,15 +106,14 @@ const App = () => {
   );
 
   useEffect(() => {
-    try {
-      const data = axios
-        .get("http://localhost:3001/persons")
-        .then((response) => setPersons(response.data));
-      console.log("Data was collected");
-    } catch (error) {
-      console.error(error);
-    }
-  }, [PhoneForm]);
+    getAll()
+      .then((response) => {
+        setPersons(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const nameChecker = () => {
     if (!Number.isNaN(Number(newName))) {
@@ -125,19 +144,13 @@ const App = () => {
 
     if (nameChecker() === true && numberChecker() === true) {
       try {
-        axios
-          .post("http://localhost:3001/persons", {
-            name: newName,
-            number: newNumber,
-          })
-          .then((response) => {
-            setPersons(persons.concat(response.data));
-          });
+        addNew(newName, newNumber).then((response) => {
+          setPersons(persons.concat(response.data));
+        });
       } catch (error) {
         console.error(error);
       }
 
-      // setPersons([...persons, { name: newName, number: newNumber }]);
       setNewName("");
       setNewNumber("");
     } else {
@@ -156,7 +169,7 @@ const App = () => {
           checker={checker}
         />
         <PhoneFilter newFilter={newFilter} setNewFilter={setNewFilter} />
-        <PhoneContacts personsToShow={personsToShow} />
+        <PhoneContacts personsToShow={personsToShow} setPersons={setPersons} />
       </div>
     </div>
   );
